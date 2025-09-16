@@ -6,4 +6,11 @@ import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), devtoolsJson() ],
+  server: {
+    host: '0.0.0.0', // Expose to network
+    port: 3000,
+    strictPort: true, // Exit if port is already in use
+    // Optional: enable HTTPS
+    // https: true
+  }
 });

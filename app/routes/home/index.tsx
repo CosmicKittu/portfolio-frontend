@@ -1,6 +1,7 @@
 import type { Route } from "./+types/index";
 import FeaturedProjects from "~/components/FeaturedProjects";
 import type { Project } from "~/type";
+import AboutPreview from "~/components/AboutPreview";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -21,5 +22,6 @@ export default function Home({loaderData}: Route.ComponentProps) {
   const {projects} = loaderData;
   return (<>
     <FeaturedProjects projects ={projects} count={2} />
+    <AboutPreview />
   </>);
 }
