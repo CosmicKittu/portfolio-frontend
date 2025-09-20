@@ -1,27 +1,45 @@
-import type { promises } from "node:timers";
 import type { Route } from "./+types/details";
-import type { Project } from "~/type";
+import type { Project, StrapiProject, StrapiResponse } from '~/type';
 import {FaArrowLeft} from 'react-icons/fa';
 import { Link } from "react-router";
 
-export async function clientLoader({request, params}: Route.ClientLoaderArgs):Promise<Project>{
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${params.id}`)
+export async function loader({request, params}: Route.LoaderArgs){
+    const {id} = params;
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/projects?filters[documentId][$eq]=${id}&populate=*`)
     if(!res.ok) throw new Response('Project not found', {status:404});
 
-    const project:Project = await res.json();
+    const json: StrapiResponse<StrapiProject> = await res.json();
 
-    return project;
+  if (!json.data.length) {
+    throw new Response('Not Found', { status: 404 });
+  }
+
+  const item = json.data[0];
+
+  const project: Project = {
+    id: item.id,
+    documentId: item.documentId,
+    title: item.title,
+    description: item.description,
+    image: item.image?.url
+      ? `${item.image.url}`
+      : '/images/no-image.png',
+    url: item.url,
+    date: item.date,
+    category: item.category,
+    featured: item.featured,
+  };
+
+  return { project };
 
 }
 
-export function HydrateFallback(){
-    return <div>Loading.....</div>
-}
+
 
 
 
 const projectDetailsPage = ({loaderData}:Route.ComponentProps) => {
-    const project = loaderData;
+    const {project} = loaderData;
     return ( 
         <>
         <Link to='/projects' className="flex items-center text-blue-400 hover:text-blue-500 mb-6 transition">
