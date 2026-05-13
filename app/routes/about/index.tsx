@@ -17,7 +17,7 @@ const AboutPage = () => {
                         {/* Warning Banner */}
                         <div className="text-red-400 bg-red-950/40 border border-red-500 px-4 py-3 rounded-lg mb-5">
                             <p className="font-semibold">
-                                ⚠️ Backend server may take a few seconds to respond because free hosting services sleep when inactive.
+                                ⚠️ Other pages may take a few seconds to load because the backend server sleeps when inactive.
                             </p>
                         </div>
 
